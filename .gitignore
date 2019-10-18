@@ -2,6 +2,6 @@
 **/__pychache__/
 **/*.pyc
 **/*.png
-data/
+**/*.jpg
 **/*.out
 **/*.log
