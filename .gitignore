@@ -1,0 +1,7 @@
+**/*.pth.tar
+**/__pychache__/
+**/*.pyc
+**/*.png
+data/
+**/*.out
+**/*.log
