@@ -30,8 +30,6 @@ if not os.path.exists(save_dir):
     os.mkdir(save_dir)
 writer = SummaryWriter(log_dir=save_dir)
 
-global_min_error = 1e5 
-
 
 def train_model(save_dir=save_dir, lr=config.lr,num_epochs=config.epoch_num, save_epoch=config.save_freq, test_interval=config.test_freq):
 
@@ -70,11 +68,12 @@ def train_model(save_dir=save_dir, lr=config.lr,num_epochs=config.epoch_num, sav
 
 
     # start trainning
+    global_min_error = 1e5 
     for epoch in range(config.resume_epoch_num, num_epochs):
         
+        ############# trainning ###############
         print("current lr is :",optimizer.param_groups[0]['lr'])
         model.train()
-        ############# trainning ###############
         train_loss = 0.0
         train_mae_a = 0.0
         train_mae_s = 0.0
@@ -152,7 +151,10 @@ def train_model(save_dir=save_dir, lr=config.lr,num_epochs=config.epoch_num, sav
 
             if global_min_error>test_mae_a+test_mae_s:
                 global_min_error = test_mae_a+test_mae_s
-
+                global_min_error = test_mae_a+test_mae_s
+                torch.save({'epoch': epoch + 1,'state_dict': model.state_dict(),'opt_dict': optimizer.state_dict(),
+                    }, os.path.join(save_dir,'best.pth.tar'))
+                print("Save model at {}\n".format(os.path.join(save_dir,'best.pth.tar')))
 
     writer.close()
 
