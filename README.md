@@ -1,7 +1,7 @@
 # UISEE_AI_Competition_Baseline
-UISEE Self-Driving Competition Baseline
+ A simple baseline of UISEE Self-Driving Competition.
 
-## TODO List
+# TODO List
 - [ ] Add submit testing.
 - [ ] Build a faster dataset, `DALI` or `LMDB`.
 - [ ] Add more data augmentation, random resize, crop, rotate, ...
