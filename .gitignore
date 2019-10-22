@@ -2,6 +2,8 @@
 **/__pychache__/
 **/*.pyc
 **/*.png
-**/*.jpg
+*/*/*
 **/*.out
 **/*.log
+**/events.out*
+**/*.zip
