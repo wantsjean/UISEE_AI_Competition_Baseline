@@ -7,9 +7,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader
 from fast_dataset import THODataset
 from data_process import *
-from networks.baseline2d_lstm import Baseline2D_LSTM
-from networks.baseline2path import Baseline2Path
-from config import Config
+from config import *
 torch.backends.cudnn.benchmark = True
 
 torch.cuda.manual_seed(43)
@@ -33,7 +31,7 @@ writer = SummaryWriter(log_dir=save_dir)
 def train_model(save_dir=save_dir, lr=config.lr, num_epochs=config.epoch_num, save_epoch=config.save_freq, val_interval=config.val_freq):
 
     # prepare model
-    model = Baseline2Path()
+    model = get_model_by_name(config.model_name)
     # model = model.cuda()
     model = model.to(config.device_ids[0])
     if len(config.device_ids) > 1:
@@ -57,7 +55,6 @@ def train_model(save_dir=save_dir, lr=config.lr, num_epochs=config.epoch_num, sa
         optimizer, milestones=config.milestones, gamma=0.1)
 
     # prepare data
-
     data = np.load(os.path.join(data_root, 'train.npy'))
     train_set = THODataset(data, config.data_root,
                            config.label_path, config.dataset, split='train')
@@ -147,7 +144,6 @@ def train_model(save_dir=save_dir, lr=config.lr, num_epochs=config.epoch_num, sa
                     val_loss += loss.item() * inputs.size(0)
 
             # save fig of speed and angle at models/data/ epoch_speed.png & epoch_angle.png
-
             timeline = list(range(len(gt_a)))
             plot_line(timeline, gt_s, predict_s, label="speed_gt", label1="speed_pred",
                       path=os.path.join(save_dir, str(epoch)+"_speed.png"))
@@ -169,7 +165,6 @@ def train_model(save_dir=save_dir, lr=config.lr, num_epochs=config.epoch_num, sa
                             }, os.path.join(save_dir, 'best.pth.tar'))
                 print("Save model at {}\n".format(
                     os.path.join(save_dir, 'best.pth.tar')))
-
     writer.close()
 
 
